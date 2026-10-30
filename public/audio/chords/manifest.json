@@ -1,0 +1,90 @@
+{
+  "source": "https://www.youtube.com/watch?v=qWX31yz68Ns",
+  "title": "YouTube Piano (Chords) - Play Piano (Chords) with Computer Keyboard",
+  "creator": "Play With Keyboard",
+  "sampleRate": 44100,
+  "channels": 1,
+  "preparation": "Leading silence trimmed; peak normalized to 0.85; 3ms attack and 150ms ending fade",
+  "samples": [
+    {
+      "id": "C",
+      "file": "c.wav",
+      "cueSeconds": 15,
+      "trimSeconds": 0.115,
+      "durationSeconds": 3.2,
+      "sha256": "f07a4001d93c946f914d3b8ffcd622582f27792e8359051cbf22a2ddf91a90fb"
+    },
+    {
+      "id": "Dm",
+      "file": "dm.wav",
+      "cueSeconds": 30,
+      "trimSeconds": 0.115,
+      "durationSeconds": 3.2,
+      "sha256": "3c5ce8724052690a7195b0492dc87baeefeef0665ae7a9f4e6c1f53c6f23b932"
+    },
+    {
+      "id": "Em",
+      "file": "em.wav",
+      "cueSeconds": 45,
+      "trimSeconds": 0.125,
+      "durationSeconds": 3.2,
+      "sha256": "194f495671d3ab9db62c594fabdc23a057be73a6fc7dacee056b73f1c7dab4ee"
+    },
+    {
+      "id": "F",
+      "file": "f.wav",
+      "cueSeconds": 60,
+      "trimSeconds": 0.165,
+      "durationSeconds": 3.2,
+      "sha256": "d13d92a6452f909f66b7712f54cdfe7a803c5c67567c93eeb60ec8a494e6c17d"
+    },
+    {
+      "id": "G",
+      "file": "g.wav",
+      "cueSeconds": 75,
+      "trimSeconds": 0.165,
+      "durationSeconds": 3.2,
+      "sha256": "95362a332e97d0ecb3b39a55210ef516fa631fdce13f15bfc5877ee19fcb2155"
+    },
+    {
+      "id": "Am",
+      "file": "am.wav",
+      "cueSeconds": 90,
+      "trimSeconds": 0.165,
+      "durationSeconds": 3.2,
+      "sha256": "3f38c8ee5e90f7ff74df08c20b7d08e5c63d8f0e656d86877d7f149de35da744"
+    },
+    {
+      "id": "D",
+      "file": "d.wav",
+      "cueSeconds": 105,
+      "trimSeconds": 0.175,
+      "durationSeconds": 3.2,
+      "sha256": "c7a2bc57c10ef2ee281efba90093aaecfe6f4673065c698456d05df2c82028e4"
+    },
+    {
+      "id": "A",
+      "file": "a.wav",
+      "cueSeconds": 120,
+      "trimSeconds": 0.185,
+      "durationSeconds": 3.2,
+      "sha256": "13c7ddd5ca0b9c63dba06e8d3244e0197e871a60b7aadd9831bee98984206a42"
+    },
+    {
+      "id": "E",
+      "file": "e.wav",
+      "cueSeconds": 135,
+      "trimSeconds": 0.195,
+      "durationSeconds": 3.2,
+      "sha256": "2069c70b87c4f7ff141df03f0e2883b630215850882ec4fd75b4eac31067b6b3"
+    },
+    {
+      "id": "Bm",
+      "file": "bm.wav",
+      "cueSeconds": 0,
+      "trimSeconds": 0.095,
+      "durationSeconds": 3.2,
+      "sha256": "77824e0bec3f25555140d1fc0894bc62b0134784344344263be2b5678315529b"
+    }
+  ]
+}

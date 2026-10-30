@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.wasm binary
+*.wav binary
+*.task binary
+public/wasm/*.js linguist-vendored -whitespace
