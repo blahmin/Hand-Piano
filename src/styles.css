@@ -213,7 +213,7 @@ h1 em {
   gap: 18px;
 }
 .camera-stage {
-  min-height: 365px;
+  min-height: 400px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -270,6 +270,18 @@ h1 em {
   color: var(--mint);
   font-size: 17px;
 }
+.camera-feed {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.camera-stage.is-live .camera-feed {
+  min-height: 280px;
+}
 .camera-video,
 .landmark-canvas {
   position: absolute;
@@ -295,7 +307,7 @@ h1 em {
 .camera-stage.is-live .camera-stage-bottom {
   text-shadow: 0 1px 5px #000;
 }
-.camera-stage.is-live:after {
+.camera-stage.is-live .camera-feed:after {
   content: "";
   position: absolute;
   inset: 0;
@@ -387,22 +399,22 @@ h1 em {
   border-width: 0 1px 1px 0;
 }
 .live-gesture-chip {
-  position: absolute;
-  bottom: 49px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  max-width: calc(100% - 34px);
+  margin: 46px 17px 12px;
   background: #111b16dc;
   border: 1px solid #a4c5a550;
   color: #d5e7d1;
   border-radius: 20px;
-  white-space: nowrap;
   padding: 9px 14px;
-  font-size: 11px;
-  backdrop-filter: blur(10px);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  pointer-events: none;
 }
 .tracking-prompt {
   position: relative;
@@ -964,7 +976,7 @@ h1 em {
     padding: 0 70px;
   }
   .camera-stage {
-    min-height: 400px;
+    min-height: 440px;
   }
   .camera-welcome {
     padding: 35px 12px 45px;
@@ -1000,7 +1012,7 @@ h1 em {
     font-size: 10px;
   }
   .camera-stage {
-    min-height: 365px;
+    min-height: 400px;
   }
 }
 @media (max-width: 760px) {
@@ -1034,7 +1046,7 @@ h1 em {
     grid-template-columns: minmax(0, 1fr);
   }
   .camera-stage {
-    min-height: 355px;
+    min-height: 390px;
   }
   .session-panel {
     display: grid;
@@ -1171,7 +1183,7 @@ h1 em {
     font-size: 30px;
   }
   .camera-stage {
-    min-height: 345px;
+    min-height: 380px;
   }
   .piano-key {
     height: 125px;
@@ -1405,14 +1417,7 @@ h1 em {
   margin: 20px 0 24px;
 }
 .camera-stage.is-live {
-  min-height: 440px;
-}
-.live-gesture-chip {
-  bottom: 15px;
-  max-width: calc(100% - 34px);
-  font-size: 12px;
-  white-space: normal;
-  text-align: center;
+  min-height: 520px;
 }
 .camera-stage.is-live .camera-stage-bottom {
   display: none;
@@ -1456,7 +1461,7 @@ h1 em {
     margin-top: 3px;
   }
   .camera-stage.is-live {
-    min-height: 365px;
+    min-height: 420px;
   }
   .live-gesture-chip {
     font-size: 10px;
@@ -1467,6 +1472,115 @@ h1 em {
   display: inline;
   white-space: nowrap;
   color: var(--mint);
+}
+
+.recorder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 20px;
+  padding: 18px 20px;
+  margin-bottom: 27px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--panel);
+}
+.recorder.is-recording {
+  border-color: #bb7772;
+}
+.recorder-heading {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.recorder-readout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 12px "Courier New", monospace;
+  color: #9eae9b;
+}
+.recorder-readout output {
+  color: #edece5;
+  min-width: 60px;
+}
+.record-light {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #647268;
+}
+.record-light.is-on {
+  background: #ffaaa0;
+  box-shadow: 0 0 9px #ffaaa044;
+}
+.recorder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.recorder-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #3c4d40;
+  border-radius: 5px;
+  background: #202b23;
+  color: #d2dfcc;
+  font-size: 11px;
+}
+.recorder-primary {
+  color: var(--mint);
+  border-color: #68856f;
+}
+.recorder.is-recording .recorder-primary {
+  color: #ffb9b0;
+  border-color: #bb7772;
+}
+.recorder-button:hover:not(:disabled) {
+  background: #2b3b2f;
+}
+.recorder-button:disabled,
+.piano-key:disabled,
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+.piano-key:disabled {
+  opacity: 1;
+}
+.recorder-button:disabled {
+  opacity: 0.4;
+}
+.recorder-message,
+.recorder-note {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  color: #b8c6b2;
+}
+.recorder-note {
+  font-size: 10px;
+  color: #8f9e8c;
+  margin-top: -7px;
+}
+@media (max-width: 1050px) {
+  .recorder {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .recorder {
+    padding: 16px;
+  }
+  .recorder-heading {
+    gap: 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

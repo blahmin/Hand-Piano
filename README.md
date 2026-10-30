@@ -45,6 +45,14 @@ Choose **Sound → Piano** for the original individual notes: **left C3–C4**, 
 
 **Left boost** controls the left bank's level independently, including notes already held. Piano starts at 250% to bring out the lower octave; recorded chords start at 100% because those samples are normalized. Each mode remembers its own setting during the session. Adjust between 100% and 300% to balance your speakers. The main Volume control starts at 75% and adjusts both banks.
 
+### Record your playing
+
+Select **Record**, then play using hand gestures, keyboard shortcuts, or the on-screen keys. The recorder captures each successful stroke, its start time, and how long it is held, including overlapping notes from both hands. A timer and stroke count show your progress. Start recording before pressing any keys; existing sounds are silenced when a take begins.
+
+Select **Stop recording**, then **Play recording** to hear the take with its original timing, sound mode, hand range, and left boost. Playback includes the final notes' natural decay. Sound, range, and left boost stay fixed while recording or playing; Volume remains adjustable. Live keys are paused during playback. **Stop playback** stops immediately, and **Clear** removes the take. An empty take cannot be played.
+
+There is one take per session. **Record new take** replaces it once recording starts; refreshing or closing the page removes it. Window blur, switching tabs, or stopping the camera finishes an active recording and cancels playback. No camera video or microphone audio is captured, and no recording is uploaded.
+
 ### Recorded chord source
 
 The ten samples were extracted from [YouTube Piano (Chords) by Play With Keyboard](https://www.youtube.com/watch?v=qWX31yz68Ns) using the supplied timestamps: C 0:15, Dm 0:30, Em 0:45, F 1:00, G 1:15, Am 1:30, D 1:45, A 2:00, E 2:15, Bm 0:00. These are complete chords, not single-note samples. They play at their original pitch and are not shifted to the Piano mode's octaves.
@@ -69,6 +77,7 @@ keyboard / mouse / touch ──────────────────�
 - `src/tracking`: camera lifecycle, local model loading, frame scheduling, stable hand identities, labeled landmark drawing.
 - `src/gestures`: pure geometry, smoothing, independent pinch state machines, per-hand loss timeouts.
 - `src/audio`: synthesized voices, decoded chord buffers, bounded polyphony, envelopes, volume, cleanup.
+- `src/audio/recording.ts`: stroke capture, note durations, and cancellable timed playback.
 - `src/use-instrument.ts`: session orchestration and input ownership.
 - `src/components`: accessible UI and virtual piano.
 - `tests`: deterministic landmark fixtures and temporal gesture tests.
@@ -100,13 +109,13 @@ The app releases notes on tracking loss, tab hiding, window blur, and camera sto
 
 ## Privacy and assets
 
-Camera permission is explicit. The application requests video only, records nothing, and sends no camera frames to a server. Model/WASM assets are served by the same local Vite server. The model source, byte length, and SHA-256 are recorded in `public/models/manifest.json`.
+Camera permission is explicit. The application requests video only and sends no camera frames to a server. The optional piano recorder stores only note events in memory for the current session; it does not record camera video or microphone audio. Model/WASM assets are served by the same local Vite server. The model source, byte length, and SHA-256 are recorded in `public/models/manifest.json`.
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for upstream licensing. Dependency installation and a missing model's initial download require internet access.
 
 ## Scope
 
-This is a hackathon demo. Gesture thresholds and two-hand accuracy need real-camera testing on the presentation laptop. Extra gesture types, recording, custom training, cloud infrastructure, and extensive CI are intentionally outside this version.
+This is a hackathon demo. Gesture thresholds and two-hand accuracy need real-camera testing on the presentation laptop. Extra gesture types, recording export/persistence, custom training, cloud infrastructure, and extensive CI are intentionally outside this version.
 
 ### Manual acceptance check
 
@@ -121,3 +130,5 @@ This is a hackathon demo. Gesture thresholds and two-hand accuracy need real-cam
 - Switch to Piano and verify eight keys per side and the original split octaves.
 - Compare left and right levels in both modes and test rapid alternating pinches for visible input lag.
 - Try both rows of keyboard shortcuts, then stop the camera.
+- Record overlapping strokes with both banks, stop, and replay; verify timing, held durations, and final decay.
+- Stop playback early, switch tabs during a recording, and clear a take; confirm no notes remain stuck.

@@ -17,6 +17,7 @@ interface Props {
   mode: InstrumentMode;
   onPress: (id: string, index: number, side: HandSide) => void;
   onRelease: (id: string) => void;
+  disabled?: boolean;
 }
 
 export const PianoKeyboard = memo(function PianoKeyboard({
@@ -26,6 +27,7 @@ export const PianoKeyboard = memo(function PianoKeyboard({
   mode,
   onPress,
   onRelease,
+  disabled = false,
 }: Props) {
   return (
     <section className="piano-section" aria-label="Virtual piano">
@@ -94,6 +96,7 @@ export const PianoKeyboard = memo(function PianoKeyboard({
                       <button
                         key={note.name}
                         type="button"
+                        disabled={disabled}
                         className={`piano-key ${active ? "is-active" : ""} ${hovered ? "is-selected" : ""}`}
                         aria-label={`Play ${side} ${note.name} (${note.shortcut})`}
                         aria-pressed={active}

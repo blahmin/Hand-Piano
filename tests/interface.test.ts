@@ -61,6 +61,15 @@ vi.mock("../src/use-instrument", () => ({
     setRange: vi.fn(),
     setMode: vi.fn(),
     toggleLandmarks: vi.fn(),
+    recordingStatus: "idle",
+    recordingElapsedMs: 0,
+    recordedStrokeCount: 0,
+    recordingMessage: "Ready when you are.",
+    take: null,
+    startRecording: vi.fn(),
+    stopRecording: vi.fn(),
+    playRecording: vi.fn(),
+    clearRecording: vi.fn(),
   }),
 }));
 

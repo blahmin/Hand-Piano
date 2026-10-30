@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 type IconName =
   | "camera"
   | "play"
+  | "record"
   | "stop"
   | "volume"
   | "keyboard"
@@ -19,6 +20,7 @@ const paths: Record<IconName, React.ReactNode> = {
     </>
   ),
   play: <path d="m8 5 11 7-11 7z" />,
+  record: <circle cx="12" cy="12" r="6" fill="currentColor" stroke="none" />,
   stop: <rect x="6" y="6" width="12" height="12" rx="2" />,
   volume: (
     <>

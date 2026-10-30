@@ -11,6 +11,7 @@ import type { HandRange, InstrumentMode } from "./config";
 import { Icon } from "./components/Icons";
 import { PianoKeyboard } from "./components/PianoKeyboard";
 import { GestureGuide } from "./components/GestureGuide";
+import { Recorder } from "./components/Recorder";
 import { useInstrument } from "./use-instrument";
 
 export default function App() {
@@ -28,6 +29,8 @@ export default function App() {
   ).length;
   const live = status === "live";
   const starting = status === "starting";
+  const recorderBusy = instrument.recordingStatus !== "idle";
+  const playbackBusy = instrument.recordingStatus === "playing" || instrument.recordingStatus === "preparing";
   const playing = activeNotes.length > 0;
   const sounding =
     activeNotes.find(
@@ -123,69 +126,71 @@ export default function App() {
               </span>
               <span className="stage-tag">01 / TWO-HAND TRACKING</span>
             </div>
-            <video
-              ref={instrument.videoRef}
-              autoPlay
-              muted
-              playsInline
-              className={`camera-video ${live ? "visible" : ""}`}
-            />
-            <canvas
-              ref={instrument.canvasRef}
-              className={`landmark-canvas ${live ? "visible" : ""}`}
-            />
-            {!live && (
-              <div className="camera-welcome">
-                <div className="camera-empty-icon">
-                  <Icon name="camera" size={48} />
-                </div>
-                <h2>
-                  {starting ? "Finding your rhythm…" : "Make room for play."}
-                </h2>
-                <p>
-                  {starting
-                    ? "Preparing local hand tracking and your camera."
-                    : "Turn on your camera. Let your hands do the rest."}
-                </p>
-                <button
-                  className="primary-button"
-                  disabled={starting}
-                  onClick={() => void instrument.start()}
-                >
-                  <Icon name="camera" size={18} />
-                  {starting
-                    ? "Connecting camera…"
-                    : status === "error"
-                      ? "Try camera again"
-                      : "Enable camera"}
-                  {!starting && <Icon name="arrow" size={17} />}
-                </button>
-                <span className="permission-note">
-                  Your browser will ask for camera permission.
-                </span>
-                {starting && (
-                  <button
-                    className="text-button cancel-button"
-                    onClick={instrument.stop}
-                  >
-                    Cancel
-                  </button>
-                )}
-              </div>
-            )}
-            {live && !hand.tracked && (
-              <div className="tracking-prompt">
-                <span className="scanning-ring" />
-                <h2>Your hands belong here.</h2>
-                <p>Keep thumb and index apart, then move your hand sideways.</p>
-              </div>
-            )}
             {live && (
               <div className="live-gesture-chip">
                 <span className={`status-dot ${hand.tracked ? "is-on" : ""}`} />
                 {gestureLabel}
               </div>
             )}
+            <div className="camera-feed">
+              <video
+                ref={instrument.videoRef}
+                autoPlay
+                muted
+                playsInline
+                className={`camera-video ${live ? "visible" : ""}`}
+              />
+              <canvas
+                ref={instrument.canvasRef}
+                className={`landmark-canvas ${live ? "visible" : ""}`}
+              />
+              {!live && (
+                <div className="camera-welcome">
+                  <div className="camera-empty-icon">
+                    <Icon name="camera" size={48} />
+                  </div>
+                  <h2>
+                    {starting ? "Finding your rhythm…" : "Make room for play."}
+                  </h2>
+                  <p>
+                    {starting
+                      ? "Preparing local hand tracking and your camera."
+                      : "Turn on your camera. Let your hands do the rest."}
+                  </p>
+                  <button
+                    className="primary-button"
+                    disabled={starting || recorderBusy}
+                    onClick={() => void instrument.start()}
+                  >
+                    <Icon name="camera" size={18} />
+                    {starting
+                      ? "Connecting camera…"
+                      : status === "error"
+                        ? "Try camera again"
+                        : "Enable camera"}
+                    {!starting && <Icon name="arrow" size={17} />}
+                  </button>
+                  <span className="permission-note">
+                    Your browser will ask for camera permission.
+                  </span>
+                  {starting && (
+                    <button
+                      className="text-button cancel-button"
+                      onClick={instrument.stop}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              )}
+              {live && !hand.tracked && (
+                <div className="tracking-prompt">
+                  <span className="scanning-ring" />
+                  <h2>Your hands belong here.</h2>
+                  <p>Keep thumb and index apart, then move your hand sideways.</p>
+                </div>
+              )}
+            </div>
             <div className="camera-stage-bottom">
               <span>
                 <Icon name="shield" size={13} /> PROCESSED ON YOUR DEVICE
@@ -330,6 +335,7 @@ export default function App() {
           <div className="input-controls">
             <button
               className={`control-button ${live || starting ? "is-active" : ""}`}
+              disabled={recorderBusy && !live && !starting}
               onClick={
                 live || starting
                   ? instrument.stop
@@ -356,6 +362,7 @@ export default function App() {
             <label htmlFor="sound-mode">Sound</label>
             <select
               id="sound-mode"
+              disabled={recorderBusy}
               value={mode}
               onChange={(event) =>
                 instrument.setMode(event.target.value as InstrumentMode)
@@ -370,6 +377,7 @@ export default function App() {
               <label htmlFor="hand-range">Hand range</label>
               <select
                 id="hand-range"
+                disabled={recorderBusy}
                 value={range}
                 onChange={(event) =>
                   instrument.setRange(event.target.value as HandRange)
@@ -399,6 +407,7 @@ export default function App() {
             <label htmlFor="left-boost">Left boost</label>
             <input
               id="left-boost"
+              disabled={recorderBusy}
               type="range"
               min="100"
               max={MAX_LEFT_BOOST}
@@ -412,6 +421,18 @@ export default function App() {
           </div>
         </div>
 
+        <Recorder
+          status={instrument.recordingStatus}
+          elapsedMs={instrument.recordingElapsedMs}
+          strokeCount={instrument.recordedStrokeCount}
+          take={instrument.take}
+          message={instrument.recordingMessage}
+          onRecord={() => void instrument.startRecording()}
+          onStop={instrument.stopRecording}
+          onPlay={() => void instrument.playRecording()}
+          onClear={instrument.clearRecording}
+        />
+
         <PianoKeyboard
           activeNotes={activeNotes}
           hands={hands}
@@ -419,6 +440,7 @@ export default function App() {
           mode={mode}
           onPress={instrument.press}
           onRelease={instrument.release}
+          disabled={playbackBusy}
         />
         <div className="manual-entry">
           <span>
@@ -504,7 +526,13 @@ export default function App() {
           for the right, or click the keys.
         </div>
         <p className="help-privacy">
-          Camera frames stay on your device. Nothing is recorded or uploaded.
+          Select Record to capture your piano strokes, then Stop recording and
+          Play recording to hear your take. Takes stay in this session; a new
+          take replaces the previous one. Switching tabs or leaving the window
+          stops the recorder and playback.
+        </p>
+        <p className="help-privacy">
+          Camera frames stay on your device. No camera or microphone audio is recorded or uploaded.
           Good lighting and a simple background help.
         </p>
         <button
