@@ -1,4 +1,4 @@
-# Hand Piano
+# Hand Piano　－FIRST　PLACE GRIZZHACKS　X　HACKTOBER HACKATHON
 
 A little motion. A lot of music. A two-hand virtual piano played with a webcam, a thumb–index pinch, or your computer keyboard.
 
